@@ -1,5 +1,5 @@
 #!/bin/bash
-# Ver.1.1.0
+# Ver.1.2.0
 fileExt='.tp' # 結構使うし、変更の可能性もあるので一応変数化。置換でも良さげだけど。
 DIR=~/projects/PKM/ # 文字列にしてはならない(戒め)
 DATADIR=${DIR}data/
@@ -16,8 +16,23 @@ elif [ "$1" = "ls" ]; then # ls(list)コマンド tdファイル一覧をタイ�
   IFS_ORG=$IFS # IFS(区切り文字)変数のオリジナルを退避
   IFS=$'\n' # IFS変数を改行のみに変更
   arr_string=$(grep -r -A2 "^\\\title:" ${DATADIR}*${fileExt}) # grepの検索結果を配列に代入(改行区切り)
+  i=0;
+  buff='';
   for str in ${arr_string[@]}; do
-    echo ${str#$DATADIR} # ディレクトリ部分を取り除いて出力
+    if [ $i -eq 0 ]; then # title
+      buff+=${str#*title:}
+    elif [ $i -eq 1 ]; then # date
+      # buff=${str%-\\*}:${str#*date:}:${buff} # パス有り (Ctrl+クリックで開ける)
+      buff=${str#*date:}:${buff} # パス無し すっきり
+    elif [ $i -eq 2 ]; then # tags
+      buff+=${str#*tags:}
+      echo ${buff};
+    elif [ $i -eq 3 ]; then # --
+      buff='';
+      i=$((-1));
+    fi
+    i=$((${i}+1))
+    # echo ${str#$DATADIR} # ディレクトリ部分を取り除いて出力
   done
   IFS=$IFS_ORG # IFS変数を復元
   exit 0;
