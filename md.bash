@@ -29,7 +29,7 @@ elif [ "$1" = "find" ]; then # findコマンド
   IFS=$'\n' # IFS変数を改行のみに変更
   arr_files=$(grep -lr $2 ${DIR}*${fileExt}) # grepの検索結果(ファイル名)を配列に代入(改行区切り)
   for file_finded in ${arr_files[@]}; do
-    echo "-----${file_finded#$DIR}-----";
+    echo "-----${file_finded##*/}-----"; # ##*/ -> #$DIR も可
     echo "$(grep -A1 "^\\\title:" ${file_finded})";
     # grep -n --color=auto $2 ${file_finded};
     arr_string=$(grep -n --color=always $2 ${file_finded}) # grepの検索結果を配列に代入(改行区切り)(色付き)
