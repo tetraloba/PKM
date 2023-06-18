@@ -17,6 +17,21 @@ if [ "$1" = "ls" ]; then # ls(list)コマンド tdファイル一覧をタイト
     echo ${str#$DIR} # ディレクトリ部分を取り除いて出力
   done
   IFS=$IFS_ORG # IFS変数を復元
+  exit 0;
+elif [ "$1" = "find" ]; then # findコマンド
+  if [ $# -lt 2 ]; then
+    echo "find: too few argument";
+    exit 0;
+  fi
+  IFS_ORG=$IFS # IFS(区切り文字)変数のオリジナルを退避
+  IFS=$'\n' # IFS変数を改行のみに変更
+  arr_string=$(grep -r $2 ${DIR}*${fileExt}) # grepの検索結果を配列に代入(改行区切り)
+  for str in ${arr_string[@]}; do
+    echo ${str#$DIR} # ディレクトリ部分を取り除いて出力
+  done
+  IFS=$IFS_ORG # IFS変数を復元
+  exit 0;
+    
 else
   echo "command '${1}' not found"
 fi
