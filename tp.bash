@@ -1,7 +1,7 @@
 #!/bin/bash
-# Ver.0.4.0
-fileExt='.td' # 結構使うし、変更の可能性もあるので一応変数化。置換でも良さげだけど。
-DATADIR=~/projects/PKM/ # 文字列にしてはならない(戒め)
+# Ver.1.1.0
+fileExt='.tp' # 結構使うし、変更の可能性もあるので一応変数化。置換でも良さげだけど。
+DIR=~/projects/PKM/ # 文字列にしてはならない(戒め)
 DATADIR=${DIR}data/
 userName='tetraloba' # 権限設定時のユーザ名
 if [ $# -eq 0 -o "$1" = "mk" ]; then # mk(make)コマンド
@@ -45,7 +45,7 @@ elif [ "$1" = "find" ]; then # findコマンド
 elif [ "$1" = "install" ]; then # installコマンド
   sudo chmod 744 ${DIR}$(basename $0)
   sudo chown ${userName} ${DIR}$(basename $0)
-  sudo rm /usr/local/bin/$(basename ${0%.*})
+  sudo rm -f /usr/local/bin/$(basename ${0%.*})
   sudo ln -s ${DIR}$(basename $0) /usr/local/bin/$(basename ${0%.*})
   exit 0;
 
